@@ -3,8 +3,9 @@ package org.EAL.automation.service;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import org.EAL.interfaces.service_interfaces.IEmailService;
-import org.EAL.module_configuration.EmailAccountModule;
 import org.EAL.module_configuration.EmailModule;
+import org.EAL.module_configuration.ReceiverAccountModule;
+import org.EAL.module_configuration.SenderAccountModule;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,13 +13,10 @@ import java.util.ArrayList;
 
 public class EmailAutomationService implements IEmailService {
 
-    private Session sessionLifeCycle;
-
     private Message emailMessage;
 
     public EmailAutomationService (Session session){
-        this.sessionLifeCycle = session;
-        this.emailMessage = new MimeMessage(this.sessionLifeCycle);
+        this.emailMessage = new MimeMessage(session);
     }
 
     @Override
@@ -32,16 +30,16 @@ public class EmailAutomationService implements IEmailService {
     }
 
     @Override
-    public MimeMessage fillEmailInfo(EmailModule email, EmailAccountModule account){
+    public MimeMessage fillEmailInfo(EmailModule email, SenderAccountModule sender, ReceiverAccountModule receiver){
         Multipart attachmentToEmail = new MimeMultipart();
         try {
             //Embedding sender email address
-            this.emailMessage.setFrom(new InternetAddress(email.getSender().getEmailName(),
-                                        AttachModule.AttachTitle(account.getEmailName())));
+            this.emailMessage.setFrom(new InternetAddress(sender.getEmailAddress(),
+                                        AttachModule.AttachTitle(sender.getNickname())));
 
             //Embedding receiver email address
             this.emailMessage.setRecipient(jakarta.mail.Message.RecipientType.TO,
-                                            new InternetAddress(account.getEmailName()));
+                                            new InternetAddress(receiver.getEmailAddress()));
 
             // Embedding subjects
             this.emailMessage.setSubject(email.getSubject());
@@ -58,7 +56,7 @@ public class EmailAutomationService implements IEmailService {
             this.emailMessage.setContent(attachmentToEmail);
 
         } catch (MessagingException msg) {
-            System.out.println("Input Error: "+ msg);
+            System.out.println("MIME embedding issue: "+ msg);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

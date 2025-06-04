@@ -1,13 +1,16 @@
 package org.EAL.interfaces.service_interfaces;
 
-import org.EAL.module_configuration.AccountNotificationListenerModule;
-import org.EAL.module_configuration.EmailAccountModule;
+import org.EAL.module_configuration.AccountNotificationLinkModule;
 
 public interface INotificationService {
 
-    public void notificationSubscription(AccountNotificationListenerModule accountListener);
+    void notificationSubscription(AccountNotificationLinkModule accountListener);
 
-    public void notificationUnsubscription(AccountNotificationListenerModule accountListener);
+    void notificationUnsubscription(AccountNotificationLinkModule accountListener);
 
-    public boolean notifyReceiver(EmailAccountModule receiver, EmailAccountModule sender);
+    void notificationOff(AccountNotificationLinkModule accountListener);
+
+    void notificationOn(AccountNotificationLinkModule accountListener);
+
+    boolean notifyReceiver(AccountNotificationLinkModule accountListener);
 }

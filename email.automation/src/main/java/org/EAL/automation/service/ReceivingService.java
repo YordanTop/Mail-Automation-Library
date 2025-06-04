@@ -7,7 +7,7 @@ import jakarta.mail.search.FlagTerm;
 import jakarta.mail.search.FromTerm;
 import jakarta.mail.search.SearchTerm;
 import org.EAL.interfaces.service_interfaces.IReceivingService;
-import org.EAL.module_configuration.EmailAccountModule;
+import org.EAL.module_configuration.SenderAccountModule;
 
 
 public class ReceivingService implements IReceivingService {
@@ -22,14 +22,14 @@ public class ReceivingService implements IReceivingService {
    }
 
     @Override
-    public Message receiveMessage(EmailAccountModule sender) throws MessagingException {
+    public Message receiveMessage(SenderAccountModule sender) throws MessagingException {
 
 
         Folder inbox = mailBoxConnection.getFolder("INBOX");
 
         inbox.open(Folder.READ_ONLY);
 
-        SearchTerm fromTerm = new FromTerm(new InternetAddress(sender.getEmailName()));
+        SearchTerm fromTerm = new FromTerm(new InternetAddress(sender.getEmailAddress()));
         SearchTerm unseenTerm = new FlagTerm(new Flags(Flags.Flag.SEEN),MESSAGE_SEEN);
         SearchTerm combine = new AndTerm(fromTerm,unseenTerm);
 

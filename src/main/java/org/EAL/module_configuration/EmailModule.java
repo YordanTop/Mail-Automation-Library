@@ -1,6 +1,5 @@
 package org.EAL.module_configuration;
 
-import org.EAL.module.EmailAccount;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,19 +52,5 @@ public abstract class EmailModule {
         this.pinnedFiles = pinnedFiles;
     }
 
-
-    /**
-     Email account which will send the email.
-     */
-    @NotNull
-    protected EmailAccount sender;
-
-    public @NotNull EmailAccount getSender() {
-        return sender;
-    }
-
-    public void setSender(@NotNull EmailAccount sender) {
-        this.sender = sender;
-    }
 
 }
